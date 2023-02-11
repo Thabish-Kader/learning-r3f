@@ -9,3 +9,14 @@ body,
 	overflow: hidden;
 	background-color: black;
 }
+.label {
+	font-family: Helvetica, Arial;
+	position: absolute;
+	background: #00000088;
+	color: white;
+	padding: 15px;
+	white-space: nowrap;
+	overflow: hidden;
+	border-radius: 30px;
+	user-select: none;
+}

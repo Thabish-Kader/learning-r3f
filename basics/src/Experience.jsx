@@ -1,26 +1,12 @@
-import { useFrame, extend, useThree } from "@react-three/fiber";
 import React, { useRef } from "react";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { CustomObject } from "./CustomObject";
-
-extend({ OrbitControls });
-
+import { OrbitControls } from "@react-three/drei";
 export const Experience = () => {
-	const { camera, gl } = useThree();
 	const cubeRef = useRef(null);
 	const groupRef = useRef(null);
 
-	useFrame((state, delta) => {
-		// state.camera.position.x = Math.sin(state.clock.elapsedTime) * 8;
-		// state.camera.position.z = Math.cos(state.clock.elapsedTime) * 8;
-		// state.camera.lookAt(0, 0, 0);
-
-		cubeRef.current.rotation.y += delta;
-	});
-
 	return (
 		<>
-			<orbitControls args={[camera, gl.domElement]} />
 			<directionalLight position={[1, 2, 3]} intensity={1.5} />
 			<ambientLight intensity={0.5} />
 			<group ref={groupRef}>
