@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 export const CustomObject = () => {
@@ -12,6 +12,8 @@ export const CustomObject = () => {
 		}
 		return positions;
 	}, []);
+
+	useEffect(() => {}, []);
 	return (
 		<mesh>
 			<bufferGeometry ref={geometryRef}>

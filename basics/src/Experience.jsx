@@ -9,7 +9,12 @@ export const Experience = () => {
 	const { camera, gl } = useThree();
 	const cubeRef = useRef(null);
 	const groupRef = useRef(null);
+
 	useFrame((state, delta) => {
+		// state.camera.position.x = Math.sin(state.clock.elapsedTime) * 8;
+		// state.camera.position.z = Math.cos(state.clock.elapsedTime) * 8;
+		// state.camera.lookAt(0, 0, 0);
+
 		cubeRef.current.rotation.y += delta;
 	});
 
