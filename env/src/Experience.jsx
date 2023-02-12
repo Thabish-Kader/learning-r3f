@@ -1,7 +1,9 @@
 import { useFrame } from "@react-three/fiber";
 import {
+	AccumulativeShadows,
 	OrbitControls,
 	useHelper,
+	RandomizedLight,
 	BakeShadows,
 	softShadows,
 } from "@react-three/drei";
@@ -25,6 +27,22 @@ export default function Experience() {
 			<Perf position="top-left" />
 
 			<OrbitControls makeDefault />
+			<AccumulativeShadows
+				position={[0, -0.99, 0]}
+				scale={10}
+				color="#316d39"
+				frames={100}
+				temporal
+			>
+				<RandomizedLight
+					amount={8}
+					radius={1}
+					ambient={0.5}
+					intensity={1}
+					position={[1, 2, 3]}
+					bias={0.001}
+				/>
+			</AccumulativeShadows>
 
 			<directionalLight
 				ref={directionalLight}
