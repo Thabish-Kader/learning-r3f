@@ -3,6 +3,8 @@ import { OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import { Model } from "./Model";
 import { Placeholder } from "./Placeholder";
+import { Hamburger } from "./Hamburger";
+import { Fox } from "./Fox";
 
 export default function Experience() {
 	return (
@@ -23,9 +25,12 @@ export default function Experience() {
 				<planeGeometry />
 				<meshStandardMaterial color="greenyellow" />
 			</mesh>
-			<Suspense fallback={<Placeholder />}>
-				<Model />
+			<Suspense
+				fallback={<Placeholder position-y={0.5} scale={[2, 3, 2]} />}
+			>
+				<Hamburger scale={0.35} position={[2.5, -1, -2.5]} />
 			</Suspense>
+			<Fox scale={0.02} position={[-2.5, -1, -2.5]} />
 		</>
 	);
 }
