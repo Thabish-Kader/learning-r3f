@@ -1,16 +1,18 @@
 import { useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import { useRef } from "react";
 
 export default function Experience() {
 	const cube = useRef();
+	const burger = useGLTF("./hamburger.glb");
 
 	useFrame((state, delta) => {
 		cube.current.rotation.y += delta * 0.2;
 	});
 
-	const eventHandler = () => {
-		console.log("the event is clicked");
+	const eventHandler = (e) => {
+		console.log(e);
+		cube.current.material.color.set(`hsl(${Math.random() * 360},100%,75%)`);
 	};
 
 	return (
@@ -34,6 +36,7 @@ export default function Experience() {
 				<planeGeometry />
 				<meshStandardMaterial color="greenyellow" />
 			</mesh>
+			<primitive object={burger.scene} scale={0.25} position-y={0.5} />
 		</>
 	);
 }
