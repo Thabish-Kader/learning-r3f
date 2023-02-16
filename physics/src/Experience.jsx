@@ -2,6 +2,7 @@ import { Cylinder, OrbitControls, useGLTF } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import * as THREE from "three";
 import {
+	InstancedRigidBodies,
 	BallCollider,
 	CuboidCollider,
 	CylinderCollider,
@@ -9,7 +10,7 @@ import {
 	RigidBody,
 	Physics,
 } from "@react-three/rapier";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 
 export default function Experience() {
@@ -17,6 +18,18 @@ export default function Experience() {
 	const model = useGLTF("./hamburger.glb");
 	const cube = useRef();
 	const twister = useRef();
+	const cubeTransform = useMemo(() => {
+		const positions = [];
+		const rotations = [];
+		const scales = [];
+		for (let i = 0; i < cubeCount; i++) {
+			positions.push([i * 2, 0, 0]);
+			rotations.push([0, 0, 0]);
+			scales.push([1, 1, 1]);
+		}
+		return { positions, rotations, scales };
+	}, []);
+
 	const cubeJump = () => {
 		cube.current.applyImpulse({ x: 0, y: 5, z: 0 });
 		cube.current.applyTorqueImpulse({
@@ -42,6 +55,20 @@ export default function Experience() {
 		// hitSound.volume = Math.random();
 		// hitSound.play();
 	};
+	const cubeCount = 3;
+	const cubes = useRef();
+
+	useEffect(() => {
+		for (let i = 0; i < cubeCount; i++) {
+			const matrix = new THREE.Matrix4();
+			matrix.compose(
+				new THREE.Vector3(i * 2, 0, 0),
+				new THREE.Quaternion(),
+				new THREE.Vector3(1, 1, 1)
+			);
+			cubes.current.setMatrixAt(i, matrix);
+		}
+	}, []);
 	return (
 		<>
 			<Perf position="top-left" />
@@ -87,6 +114,28 @@ export default function Experience() {
 					<primitive object={model.scene} scale={0.25} />
 					<CylinderCollider args={[0.5, 1.25]} />
 				</RigidBody>
+				<RigidBody type="fixed">
+					<CuboidCollider args={[5, 2, 0.5]} position={[0, 1, 5.5]} />
+					<CuboidCollider
+						args={[5, 2, 0.5]}
+						position={[0, 1, -5.5]}
+					/>
+					<CuboidCollider args={[0.5, 2, 5]} position={[5.5, 1, 0]} />
+					<CuboidCollider
+						args={[0.5, 2, 5]}
+						position={[-5.5, 1, 0]}
+					/>
+				</RigidBody>
+				<InstancedRigidBodies
+					positions={cubeTransform.positions}
+					rotations={cubeTransform.rotations}
+					scales={cubeTransform.scales}
+				>
+					<instancedMesh ref={cubes} args={[null, null, cubeCount]}>
+						<boxGeometry />
+						<meshStandardMaterial color="tomato" />
+					</instancedMesh>
+				</InstancedRigidBodies>
 			</Physics>
 		</>
 	);
