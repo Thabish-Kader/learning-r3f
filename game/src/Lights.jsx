@@ -1,13 +1,18 @@
 import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 // import { useHelper } from "@react-three/drei";
 // import * as THREE from "three";
 export default function Lights() {
-	const lightRef = useRef();
-	// useHelper(lightRef, THREE.DirectionalLightHelper, 1);
+	const light = useRef();
+
+	useFrame((state) => {
+		light.current.position.z = state.camera.position.z + 1 - 4;
+		light.current.target.position.z = state.camera.position.z - 4;
+	});
 	return (
 		<>
 			<directionalLight
-				ref={lightRef}
+				ref={light}
 				castShadow
 				position={[4, 4, 1]}
 				intensity={1.5}
