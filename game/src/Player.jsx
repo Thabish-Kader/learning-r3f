@@ -32,8 +32,13 @@ export const Player = () => {
 				if (value) jump();
 			}
 		);
+		const unsunscribeAny = subscribeKeys(() => {
+			console.log("any key down ");
+		});
+
 		return () => {
 			unsubscirbeJump();
+			unsunscribeAny();
 		};
 	}, []);
 
