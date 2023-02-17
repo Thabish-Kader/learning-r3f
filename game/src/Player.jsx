@@ -18,6 +18,7 @@ export const Player = () => {
 
 	const start = useGame((state) => state.start);
 	const end = useGame((state) => state.end);
+	const restart = useGame((state) => state.restart);
 	const blocksCount = useGame((state) => state.blocksCount);
 
 	const jump = () => {
@@ -32,6 +33,12 @@ export const Player = () => {
 		}
 	};
 	useEffect(() => {
+		const unsubscribeReset = useGame.subscribe(
+			(state) => state.phase,
+			(value) => {
+				if (value === "ready") reset();
+			}
+		);
 		const unsubscirbeJump = subscribeKeys(
 			(state) => state.jump,
 			(value) => {
@@ -45,6 +52,7 @@ export const Player = () => {
 		return () => {
 			unsubscirbeJump();
 			unsunscribeAny();
+			unsubscribeReset();
 		};
 	}, []);
 
@@ -101,7 +109,15 @@ export const Player = () => {
 		if (bodyPosition.z < -(blocksCount * 4 * 2)) {
 			end();
 		}
+		if (bodyPosition.y < -4) restart();
 	});
+
+	// reset
+	const reset = () => {
+		body.current.setTranslation({ x: 0, y: 1, z: 0 });
+		body.current.setLinvel({ x: 0, y: 0, z: 0 });
+		body.current.setAngvel({ x: 0, y: 0, z: 0 });
+	};
 	return (
 		<>
 			<RigidBody
